@@ -30,8 +30,10 @@ services:
       - "./traefik/dynamic:/etc/traefik/dynamic:ro"
       - "./acme.json:/letsencrypt/acme.json"
     networks:
-      - edge
+      - tau-network
 
 networks:
-  edge:
+  tau-network:
+    name: tau-network
     driver: bridge
+    external: true
