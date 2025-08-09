@@ -13,7 +13,7 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       # Let's Encrypt (HTTP-01)
-      - "--certificatesresolvers.le.acme.email=admin@comtau.com"
+      - "--certificatesresolvers.le.acme.email=dev@comtau.com"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.le.acme.httpchallenge=true"
       - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
