@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v2.11
+    restart: unless-stopped
+    command:
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # Редирект 80 -> 443
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      # Let's Encrypt (HTTP-01)
+      - "--certificatesresolvers.le.acme.email=admin@comtau.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
+      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      # Логи (по желанию)
+      - "--accesslog=true"
+      - "--log.level=INFO"
+      # (опц.) Включить дашборд локально
+      # - "--api.dashboard=true"
+      # - "--api.insecure=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      # (опц.) Дашборд локально: 8080:8080, если включишь api.insecure выше
+      # - "8080:8080"
+    volumes:
+      - "./traefik/dynamic:/etc/traefik/dynamic:ro"
+      - "./acme.json:/letsencrypt/acme.json"
+    networks:
+      - edge
+
+networks:
+  edge:
+    driver: bridge

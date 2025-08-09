@@ -1,0 +1,21 @@
+http:
+  middlewares:
+    default-secure-headers:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        forceSTSHeader: true
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+
+    gzip-compress:
+      compress: {}
+
+# (опц.) Транспорт для self-signed апстримов (отключает проверку TLS апстрима)
+# Потом можно сослаться как serversTransport: "insecureTransport" у service
+serversTransports:
+  insecureTransport:
+    insecureSkipVerify: true
